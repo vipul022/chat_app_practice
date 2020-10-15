@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/auth_routes");
 const chatroomRouter = require("./routes/chatroom_routes");
 const exphbs = require("express-handlebars");
+require("dotenv").config();
 
 const port = process.env.port || 3000;
 
@@ -22,7 +23,7 @@ app.use(
   })
 );
 
-const dbConn = "mongodb://localhost/chat-app-test";
+const dbConn = process.env.MONGODB_URI;
 
 mongoose.connect(
   dbConn,
