@@ -4,11 +4,12 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/auth_routes");
 const chatroomRouter = require("./routes/chatroom_routes");
 const exphbs = require("express-handlebars");
-
+const app = express();
+const passport = require("passport");
 const port = process.env.port || 3000;
 
 // middlewares
-const app = express();
+
 app.use(cors());
 app.use(express.json());
 //handlebars stuff
@@ -21,6 +22,11 @@ app.use(
     extended: true,
   })
 );
+
+//connecting passport to app
+// require("./config/passport");
+// app.use(passport.initialize());
+// app.use(passport.session()); //this keeps track of logged in user
 
 const dbConn = "mongodb://localhost/chat-app-test";
 
