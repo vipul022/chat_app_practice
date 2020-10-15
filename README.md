@@ -25,6 +25,7 @@
 - passport
 - mongoose-bcrypt
 - passport-local
+- dotenv
 
 #### Dev dependencies
 
