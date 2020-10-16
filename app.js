@@ -7,6 +7,7 @@ const exphbs = require("express-handlebars");
 const app = express();
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //session here is mapped with the const session on line 8, both should be same
+require("dotenv").config();
 
 const passport = require("passport");
 const port = process.env.port || 3000;
@@ -42,7 +43,8 @@ require("./middleware/passport");
 app.use(passport.initialize());
 app.use(passport.session()); //this keeps track of logged in user
 
-const dbConn = "mongodb://localhost/chat-app-test";
+// const dbConn = "mongodb://localhost/chat-app-test";
+const dbConn = process.env.MONGODB_URI || "mongodb://localhost/chat-app-test" ;
 
 mongoose.connect(
   dbConn,
