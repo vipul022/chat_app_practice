@@ -5,6 +5,9 @@ const authRouter = require("./routes/auth_routes");
 const chatroomRouter = require("./routes/chatroom_routes");
 const exphbs = require("express-handlebars");
 const app = express();
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session); //session here is mapped with the const session on line 8, both should be same
+
 const passport = require("passport");
 const port = process.env.port || 3000;
 
@@ -23,10 +26,21 @@ app.use(
   })
 );
 
+// express session stores session id as a cookie and reads the cookie on server side and stores data on server side
+app.use(
+  session({
+    secret: "secret key", // this should not be included in source code, must be hidden
+    resave: false,
+    saveUninitialized: false, //in canvas it is set as true but we need to set it as false in future projects
+    cookie: { expires: 600000 }, //this is 10 minutes 10*60*1000
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  }) //this is setting up session connection with database so that session is saved in db
+);
+
 //connecting passport to app
-// require("./config/passport");
-// app.use(passport.initialize());
-// app.use(passport.session()); //this keeps track of logged in user
+require("./middleware/passport");
+app.use(passport.initialize());
+app.use(passport.session()); //this keeps track of logged in user
 
 const dbConn = "mongodb://localhost/chat-app-test";
 
